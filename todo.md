@@ -67,7 +67,7 @@
 - [ ] Validar geração de HTML
 
 ## Bugs Reportados
-- [ ] BUG: Erro de DOM "NotFoundError: Failed to execute 'removeChild'" ao navegar entre páginas
+- [x] BUG: Erro de DOM "NotFoundError: Failed to execute 'removeChild'" - Corrigido: import duplicado de useAuth em Home.tsx
 
 ## Melhorias Solicitadas
 - [x] Adicionar botão "Voltar ao Dashboard" em todas as páginas
