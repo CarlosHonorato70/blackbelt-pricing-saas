@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { trpc } from "@/lib/trpc";
-import { Loader2, AlertCircle, Save } from "lucide-react";
+import { Loader2, AlertCircle, Save, Home } from "lucide-react";
+import { Link } from "wouter";
 import { toast } from "sonner";
 
 export default function Parametros() {
@@ -97,6 +98,12 @@ export default function Parametros() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+      <Link href="/">
+        <Button variant="outline" size="sm" className="mb-4 gap-2">
+          <Home className="w-4 h-4" />
+          Voltar ao Dashboard
+        </Button>
+      </Link>
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-slate-900">Parâmetros de Precificação</h1>
         <p className="text-slate-600 mt-2">Configure as regras de cálculo da sua consultoria</p>

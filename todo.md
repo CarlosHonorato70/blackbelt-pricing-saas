@@ -65,3 +65,9 @@
 - [ ] Testar cálculos de itens com descontos
 - [ ] Testar fluxo completo de proposta
 - [ ] Validar geração de HTML
+
+## Bugs Reportados
+- [ ] BUG: Erro de DOM "NotFoundError: Failed to execute 'removeChild'" ao navegar entre páginas
+
+## Melhorias Solicitadas
+- [x] Adicionar botão "Voltar ao Dashboard" em todas as páginas

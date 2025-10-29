@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/lib/trpc";
-import { Plus, Users, Loader2, AlertCircle, Trash2 } from "lucide-react";
+import { Plus, Users, Loader2, AlertCircle, Trash2, Home } from "lucide-react";
+import { Link } from "wouter";
 import { toast } from "sonner";
 
 export default function Clientes() {
@@ -90,6 +91,12 @@ export default function Clientes() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
+      <Link href="/">
+        <Button variant="outline" size="sm" className="mb-4 gap-2">
+          <Home className="w-4 h-4" />
+          Voltar ao Dashboard
+        </Button>
+      </Link>
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Clientes</h1>
