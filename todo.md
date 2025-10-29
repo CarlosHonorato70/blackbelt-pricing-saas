@@ -71,3 +71,6 @@
 
 ## Melhorias Solicitadas
 - [x] Adicionar botão "Voltar ao Dashboard" em todas as páginas
+
+## Bugs Corrigidos
+- [x] BUG: Erro de removeChild ao abrir/fechar Dialog - Corrigido: Refatoradas Propostas, Clientes e Serviços para remover Dialogs problemáticos

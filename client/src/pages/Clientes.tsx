@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -10,9 +8,10 @@ import { trpc } from "@/lib/trpc";
 import { Plus, Users, Loader2, AlertCircle, Trash2, Home } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
+import { useState } from "react";
 
 export default function Clientes() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     companyName: "",
     cnpj: "",
@@ -49,7 +48,7 @@ export default function Clientes() {
       });
 
       toast.success("Cliente criado com sucesso!");
-      setIsOpen(false);
+      setShowForm(false);
       setFormData({
         companyName: "",
         cnpj: "",
@@ -103,21 +102,18 @@ export default function Clientes() {
           <p className="text-slate-600 mt-2">Gerencie seus clientes</p>
         </div>
 
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button className="gap-2">
-              <Plus className="w-4 h-4" />
-              Novo Cliente
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Criar Novo Cliente</DialogTitle>
-              <DialogDescription>
-                Preencha os dados do cliente
-              </DialogDescription>
-            </DialogHeader>
+        <Button onClick={() => setShowForm(!showForm)} className="gap-2">
+          <Plus className="w-4 h-4" />
+          Novo Cliente
+        </Button>
+      </div>
 
+      {showForm && (
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Novo Cliente</CardTitle>
+          </CardHeader>
+          <CardContent>
             <div className="space-y-4">
               <div>
                 <Label htmlFor="companyName">Nome da Empresa *</Label>
@@ -134,17 +130,16 @@ export default function Clientes() {
                   <Label htmlFor="cnpj">CNPJ</Label>
                   <Input
                     id="cnpj"
-                    placeholder="ex: 12.345.678/0001-90"
+                    placeholder="00.000.000/0000-00"
                     value={formData.cnpj}
                     onChange={(e) => setFormData({ ...formData, cnpj: e.target.value })}
                   />
                 </div>
-
                 <div>
                   <Label htmlFor="cnae">CNAE</Label>
                   <Input
                     id="cnae"
-                    placeholder="ex: 6209-1/00"
+                    placeholder="ex: 7490-100"
                     value={formData.cnae}
                     onChange={(e) => setFormData({ ...formData, cnae: e.target.value })}
                   />
@@ -153,22 +148,20 @@ export default function Clientes() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="companySize">Porte da Empresa</Label>
+                  <Label htmlFor="companySize">Tamanho da Empresa</Label>
                   <Select value={formData.companySize} onValueChange={(value) => setFormData({ ...formData, companySize: value })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Micro">Micro (até 19)</SelectItem>
-                      <SelectItem value="Pequena">Pequena (20-99)</SelectItem>
-                      <SelectItem value="Média">Média (100-499)</SelectItem>
-                      <SelectItem value="Grande">Grande (500+)</SelectItem>
+                      <SelectItem value="Pequena">Pequena</SelectItem>
+                      <SelectItem value="Média">Média</SelectItem>
+                      <SelectItem value="Grande">Grande</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-
                 <div>
-                  <Label htmlFor="numberOfEmployees">Número de Colaboradores</Label>
+                  <Label htmlFor="numberOfEmployees">Número de Funcionários</Label>
                   <Input
                     id="numberOfEmployees"
                     type="number"
@@ -180,12 +173,11 @@ export default function Clientes() {
 
               <div>
                 <Label htmlFor="address">Endereço</Label>
-                <Textarea
+                <Input
                   id="address"
-                  placeholder="Endereço completo..."
+                  placeholder="Endereço completo"
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  rows={2}
                 />
               </div>
 
@@ -193,7 +185,7 @@ export default function Clientes() {
                 <Label htmlFor="contactName">Nome do Contato</Label>
                 <Input
                   id="contactName"
-                  placeholder="ex: João Silva"
+                  placeholder="Nome completo"
                   value={formData.contactName}
                   onChange={(e) => setFormData({ ...formData, contactName: e.target.value })}
                 />
@@ -210,7 +202,6 @@ export default function Clientes() {
                     onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
                   />
                 </div>
-
                 <div>
                   <Label htmlFor="contactPhone">Telefone</Label>
                   <Input
@@ -222,84 +213,70 @@ export default function Clientes() {
                 </div>
               </div>
 
-              <Button
-                onClick={handleCreateClient}
-                disabled={createClientMutation.isPending}
-                className="w-full"
-              >
-                {createClientMutation.isPending ? (
-                  <>
-                    <Loader2 className="animate-spin mr-2 w-4 h-4" />
-                    Criando...
-                  </>
-                ) : (
-                  "Criar Cliente"
-                )}
-              </Button>
+              <div className="flex gap-4">
+                <Button
+                  onClick={handleCreateClient}
+                  disabled={createClientMutation.isPending}
+                  className="flex-1"
+                >
+                  {createClientMutation.isPending ? (
+                    <>
+                      <Loader2 className="animate-spin mr-2 w-4 h-4" />
+                      Criando...
+                    </>
+                  ) : (
+                    "Criar Cliente"
+                  )}
+                </Button>
+                <Button variant="outline" onClick={() => setShowForm(false)} className="flex-1">
+                  Cancelar
+                </Button>
+              </div>
             </div>
-          </DialogContent>
-        </Dialog>
-      </div>
+          </CardContent>
+        </Card>
+      )}
 
       {!clients || clients.length === 0 ? (
         <Card>
           <CardContent className="pt-12 pb-12 text-center">
             <AlertCircle className="w-12 h-12 text-slate-300 mx-auto mb-4" />
             <p className="text-slate-600 mb-4">Nenhum cliente cadastrado ainda</p>
+            <Button variant="outline" onClick={() => setShowForm(true)}>
+              Cadastrar primeiro cliente
+            </Button>
           </CardContent>
         </Card>
       ) : (
         <div className="grid gap-4">
           {clients.map((client) => (
-            <Card key={client.id} className="hover:shadow-lg transition-shadow">
+            <Card key={client.id}>
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
-                  <div className="flex-1">
+                  <div>
                     <CardTitle className="flex items-center gap-2">
                       <Users className="w-5 h-5 text-green-600" />
                       {client.companyName}
                     </CardTitle>
-                    <CardDescription>
+                    <p className="text-sm text-slate-600 mt-1">
                       {client.cnpj && `CNPJ: ${client.cnpj}`}
-                    </CardDescription>
+                    </p>
                   </div>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => handleDeleteClient(client.id)}
-                    disabled={deleteClientMutation.isPending}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
                   >
-                    <Trash2 className="w-4 h-4 text-red-600" />
+                    <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                  {client.companySize && (
-                    <div>
-                      <p className="text-slate-600">Porte</p>
-                      <p className="font-semibold text-slate-900">{client.companySize}</p>
-                    </div>
-                  )}
-                  {client.numberOfEmployees && (
-                    <div>
-                      <p className="text-slate-600">Colaboradores</p>
-                      <p className="font-semibold text-slate-900">{client.numberOfEmployees}</p>
-                    </div>
-                  )}
-                  {client.contactName && (
-                    <div>
-                      <p className="text-slate-600">Contato</p>
-                      <p className="font-semibold text-slate-900">{client.contactName}</p>
-                    </div>
-                  )}
-                  {client.contactEmail && (
-                    <div>
-                      <p className="text-slate-600">Email</p>
-                      <p className="font-semibold text-slate-900 truncate">{client.contactEmail}</p>
-                    </div>
-                  )}
-                </div>
+              <CardContent className="text-sm text-slate-600 space-y-1">
+                {client.contactName && <p>Contato: {client.contactName}</p>}
+                {client.contactEmail && <p>Email: {client.contactEmail}</p>}
+                {client.contactPhone && <p>Telefone: {client.contactPhone}</p>}
+                {client.address && <p>Endereço: {client.address}</p>}
               </CardContent>
             </Card>
           ))}
