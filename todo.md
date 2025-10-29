@@ -57,3 +57,11 @@
 - [ ] Criar checkpoint do projeto
 - [ ] Documentar instruções de uso
 - [ ] Preparar código-fonte para entrega
+
+## Fase 8: Inserção de Parâmetros do Manual
+- [ ] Inserir parâmetros de precificação do manual
+- [ ] Cadastrar serviços do portfólio Black Belt
+- [ ] Testar cálculos de Hora Técnica
+- [ ] Testar cálculos de itens com descontos
+- [ ] Testar fluxo completo de proposta
+- [ ] Validar geração de HTML
