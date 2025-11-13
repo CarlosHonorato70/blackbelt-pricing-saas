@@ -1,0 +1,41 @@
+# .github/workflows/create-pr.yml
+# Workflow manual para criar um Pull Request a partir de um branch existente
+# Usa peter-evans/create-pull-request e o GITHUB_TOKEN (não precisa de colaborador extra)
+name: Create Pull Request
+
+on:
+  workflow_dispatch:
+    inputs:
+      head_branch:
+        description: 'Branch com as alterações (head)'
+        required: true
+        default: 'patch/fix-calculations-pricing-index'
+      base_branch:
+        description: 'Branch alvo (base)'
+        required: true
+        default: 'main'
+      pr_title:
+        description: 'Título do PR'
+        required: true
+        default: 'fix: ajuste em cálculos, tests e proteção de tRPC'
+      pr_body:
+        description: 'Corpo/descrição do PR'
+        required: true
+        default: 'Adds precise decimal calculations, ensures pricingParameters handling, protects tRPC with header-based middleware (recommend upgrading to token validation for production), and adds unit tests + CI.\n\nDetailed changes: see branch patch/fix-calculations-pricing-index.'
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: ${{ github.event.inputs.pr_title }}
+          body: ${{ github.event.inputs.pr_body }}
+          head: ${{ github.event.inputs.head_branch }}
+          base: ${{ github.event.inputs.base_branch }}
+          reviewers: CarlosHonorato70
